@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import os
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 current_dir = Path(__file__).parent
@@ -10,6 +10,9 @@ sys.path.insert(0, str(current_dir))
 
 from ai_engine import AIAssistant
 from task_manager import TaskManager
+
+def get_beijing_time():
+    return datetime.now(timezone(timedelta(hours=8)))
 
 st.set_page_config(
     page_title="AI智能助手",
@@ -240,7 +243,7 @@ def render_chat_interface():
     with col2:
         if st.button("发送", use_container_width=True):
             if user_input.strip():
-                timestamp = datetime.now().strftime("%H:%M:%S")
+                timestamp = get_beijing_time().strftime("%H:%M:%S")
                 
                 st.session_state.chat_history.append({
                     'role': 'user',
@@ -253,7 +256,7 @@ def render_chat_interface():
                 st.session_state.chat_history.append({
                     'role': 'assistant',
                     'content': response,
-                    'timestamp': datetime.now().strftime("%H:%M:%S")
+                    'timestamp': get_beijing_time().strftime("%H:%M:%S")
                 })
                 
                 st.rerun()
@@ -278,7 +281,7 @@ def render_chat_interface():
                 st.session_state.chat_history.append({
                     'role': 'user',
                     'content': action,
-                    'timestamp': datetime.now().strftime("%H:%M:%S")
+                    'timestamp': get_beijing_time().strftime("%H:%M:%S")
                 })
                 
                 response = st.session_state.ai_assistant.handle_quick_action(action)
@@ -286,7 +289,7 @@ def render_chat_interface():
                 st.session_state.chat_history.append({
                     'role': 'assistant',
                     'content': response,
-                    'timestamp': datetime.now().strftime("%H:%M:%S")
+                    'timestamp': get_beijing_time().strftime("%H:%M:%S")
                 })
                 
                 st.rerun()
