@@ -1,6 +1,7 @@
 import pandas as pd
 import os
-from datetime import datetime
+import time
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 import random
 
@@ -18,6 +19,9 @@ class AIAssistant:
             "程序员最讨厌的四件事：写注释、写文档、别人不写注释、别人不写文档"
         ]
     
+    def get_beijing_time(self):
+        return datetime.now(timezone(timedelta(hours=8)))
+    
     def load_knowledge_base(self):
         kb_path = Path(__file__).parent / "knowledge.csv"
         if kb_path.exists():
@@ -30,13 +34,14 @@ class AIAssistant:
     
     def get_response(self, user_input):
         user_input_lower = user_input.lower().strip()
+        now = self.get_beijing_time()
         
         if any(word in user_input_lower for word in ['时间', '几点']):
-            return f"现在是 {datetime.now().strftime('%H:%M:%S')}"
+            return f"现在是 {now.strftime('%H:%M:%S')}"
         
         if any(word in user_input_lower for word in ['日期', '今天', '几号']):
             weekdays = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
-            return f"今天是 {datetime.now().strftime('%Y年%m月%d日')} {weekdays[datetime.now().weekday()]}"
+            return f"今天是 {now.strftime('%Y年%m月%d日')} {weekdays[now.weekday()]}"
         
         if any(word in user_input_lower for word in ['笑话', '搞笑', '逗']):
             return random.choice(self.jokes)
@@ -71,11 +76,13 @@ class AIAssistant:
             return random.choice(self.jokes)
         
         if '当前时间' in action:
-            return f"现在是 {datetime.now().strftime('%H:%M:%S')}"
+            now = self.get_beijing_time()
+            return f"现在是 {now.strftime('%H:%M:%S')}"
         
         if '今日日期' in action:
+            now = self.get_beijing_time()
             weekdays = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
-            return f"今天是 {datetime.now().strftime('%Y年%m月%d日')} {weekdays[datetime.now().weekday()]}"
+            return f"今天是 {now.strftime('%Y年%m月%d日')} {weekdays[now.weekday()]}"
         
         if '关于助手' in action:
             return """我是AI智能助手，具有以下功能：
