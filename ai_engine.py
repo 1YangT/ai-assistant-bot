@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import time
+import sys
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 import random
@@ -20,7 +21,13 @@ class AIAssistant:
         ]
     
     def get_beijing_time(self):
-        return datetime.now(timezone(timedelta(hours=8)))
+        import time
+        timestamp = time.time()
+        utc_offset = 8 * 3600
+        beijing_timestamp = timestamp + utc_offset
+        now = datetime.fromtimestamp(beijing_timestamp)
+        print(f"[DEBUG] 时间计算: 时间戳={timestamp}, UTC偏移={utc_offset}, 北京时间={now}", file=sys.stderr)
+        return now
     
     def load_knowledge_base(self):
         kb_path = Path(__file__).parent / "knowledge.csv"

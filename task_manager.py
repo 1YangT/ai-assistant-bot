@@ -1,7 +1,14 @@
 import json
 import os
+import time
 from datetime import datetime
 from pathlib import Path
+
+def get_beijing_time():
+    timestamp = time.time()
+    utc_offset = 8 * 3600
+    beijing_timestamp = timestamp + utc_offset
+    return datetime.fromtimestamp(beijing_timestamp)
 
 class TaskManager:
     def __init__(self):
@@ -28,7 +35,7 @@ class TaskManager:
             'priority': priority,
             'due_date': due_date,
             'status': 'pending',
-            'created_at': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            'created_at': get_beijing_time().strftime("%Y-%m-%d %H:%M:%S")
         }
         self.tasks.append(task)
         self.save_tasks()
@@ -37,7 +44,7 @@ class TaskManager:
     def complete_task(self, task_index):
         if task_index < len(self.tasks):
             self.tasks[task_index]['status'] = 'completed'
-            self.tasks[task_index]['completed_at'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            self.tasks[task_index]['completed_at'] = get_beijing_time().strftime("%Y-%m-%d %H:%M:%S")
             self.save_tasks()
     
     def delete_task(self, task_index):
@@ -52,5 +59,5 @@ class TaskManager:
         return [t for t in self.tasks if t['status'] == 'completed']
     
     def get_overdue_tasks(self):
-        today = datetime.now().strftime("%Y-%m-%d")
+        today = get_beijing_time().strftime("%Y-%m-%d")
         return [t for t in self.tasks if t['status'] == 'pending' and t['due_date'] < today]

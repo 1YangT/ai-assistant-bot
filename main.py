@@ -344,7 +344,7 @@ def render_task_manager():
         task_priority = st.selectbox("优先级", ["低", "中", "高"])
     
     with col3:
-        task_due = st.date_input("截止日期", datetime.now() + timedelta(days=7))
+        task_due = st.date_input("截止日期", get_beijing_time() + timedelta(days=7))
     
     if st.button("添加任务", use_container_width=True):
         if task_title.strip():
