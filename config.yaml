@@ -1,0 +1,43 @@
+app:
+  name: AI智能助手
+  version: 1.0.0
+  description: 基于Streamlit的智能助手应用
+
+features:
+  chat:
+    enabled: true
+    max_history: 100
+    
+  task_manager:
+    enabled: true
+    max_tasks: 50
+    
+  knowledge_base:
+    enabled: true
+    search_limit: 5
+
+ui:
+  theme: light
+  primary_color: "#667eea"
+  secondary_color: "#764ba2"
+  font_family: "Noto Sans SC"
+
+assistant:
+  name: AI助手
+  greeting: "您好！我是AI智能助手，很高兴为您服务！"
+  
+  quick_actions:
+    - "📚 查询知识库"
+    - "💡 讲个笑话"
+    - "⏰ 当前时间"
+    - "📅 今日日期"
+    - "🌟 关于助手"
+
+knowledge_categories:
+  - 人工智能
+  - 编程技术
+  - 数据科学
+  - 软件开发
+  - 云计算
+  - 网络安全
+  - 项目管理
